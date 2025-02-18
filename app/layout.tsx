@@ -2,6 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 
+import Navbar from "@/components/navigation/navbar";
+import ThemeProvider from "@/context/Theme";
+
 const inter = localFont({
   src: "./fonts/InterVF.ttf",
   variable: "--font-inter",
@@ -29,11 +32,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning={true}>
       <body
         className={`${inter.className} ${spaceGrotesk.variable} antialiased`}
       >
-        {children}
+        <ThemeProvider attribute="class">
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
