@@ -5,6 +5,9 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/Search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { handleError } from "@/lib/handlers/error";
+import dbConnect from "@/lib/mongoose";
+
 const questions = [
   {
     _id: "1",
@@ -45,11 +48,18 @@ const questions = [
     createdAt: new Date(),
   },
 ];
-
+const test = async () => {
+  try {
+    await dbConnect();
+  } catch (error) {
+    handleError(error);
+  }
+};
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 const Home = async ({ searchParams }: SearchParams) => {
+  const res = await test();
   const { query = "", filter = "" } = await searchParams;
   const filteredQuestions = questions.filter((question) =>
     question.title.toLowerCase().includes(query?.toLowerCase()),
