@@ -4,7 +4,7 @@ export interface IUser {
   username: string;
   email: string;
   bio?: string;
-  image: string;
+  image?: string;
   location?: string;
   portfolio?: string;
   reputation?: number;
@@ -14,10 +14,10 @@ export interface IUserDoc extends IUser, Document {}
 const userSchema = new Schema(
   {
     name: { type: String, required: true },
-    userName: { type: String, required: true },
+    username: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     bio: { type: String },
-    image: { type: String, required: true },
+    image: { type: String },
     location: { type: String },
     portfolio: { type: String },
     reputation: { type: Number, default: 0 },
