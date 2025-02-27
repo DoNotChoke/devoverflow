@@ -5,8 +5,8 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/Search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes";
+import { api } from "@/lib/api";
 import { handleError } from "@/lib/handlers/error";
-import dbConnect from "@/lib/mongoose";
 
 const questions = [
   {
@@ -50,7 +50,7 @@ const questions = [
 ];
 const test = async () => {
   try {
-    await dbConnect();
+    return await api.users.getAll();
   } catch (error) {
     handleError(error);
   }
@@ -60,6 +60,7 @@ interface SearchParams {
 }
 const Home = async ({ searchParams }: SearchParams) => {
   const res = await test();
+  console.log(res);
   const { query = "", filter = "" } = await searchParams;
   const filteredQuestions = questions.filter((question) =>
     question.title.toLowerCase().includes(query?.toLowerCase()),
