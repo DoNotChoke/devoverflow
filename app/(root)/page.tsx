@@ -1,5 +1,6 @@
 import Link from "next/link";
 
+import { auth } from "@/auth";
 import QuestionCard from "@/components/cards/QuestionCard";
 import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/Search/LocalSearch";
@@ -48,19 +49,13 @@ const questions = [
     createdAt: new Date(),
   },
 ];
-const test = async () => {
-  try {
-    return await api.users.getAll();
-  } catch (error) {
-    handleError(error);
-  }
-};
+
 interface SearchParams {
   searchParams: Promise<{ [key: string]: string }>;
 }
 const Home = async ({ searchParams }: SearchParams) => {
-  const res = await test();
-  console.log(res);
+  const session = await auth();
+  console.log(session);
   const { query = "", filter = "" } = await searchParams;
   const filteredQuestions = questions.filter((question) =>
     question.title.toLowerCase().includes(query?.toLowerCase()),
