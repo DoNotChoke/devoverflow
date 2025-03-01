@@ -195,4 +195,6 @@ export const techMap: { [key: string]: string } = {
 
   // Three.js
   threejs: "devicon-threejs-original",
+
+  pytorch: "devicon-pytorch-original",
 };
