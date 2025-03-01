@@ -25,14 +25,14 @@ import ROUTES from "@/constants/routes";
 import { toast } from "@/hooks/use-toast";
 import { createQuestion, editQuestion } from "@/lib/actions/question.action";
 import { AskQuestionSchema } from "@/lib/validation";
-import { Question } from "@/types/global";
+import { Questions } from "@/types/global";
 const Editor = dynamic(() => import("@/components/editor"), {
   // Make sure we turn SSR off
   ssr: false,
 });
 
 interface Params {
-  question?: Question;
+  question?: Questions;
   isEdit?: boolean;
 }
 const QuestionForm = ({ question, isEdit = false }: Params) => {

@@ -197,4 +197,6 @@ export const techMap: { [key: string]: string } = {
   threejs: "devicon-threejs-original",
 
   pytorch: "devicon-pytorch-original",
+
+  tensorflow: "devicon-tensorflow-original",
 };
