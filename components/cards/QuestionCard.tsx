@@ -5,7 +5,7 @@ import TagCard from "@/components/cards/TagCard";
 import Metric from "@/components/Metric";
 import ROUTES from "@/constants/routes";
 import { getTimeStamp } from "@/lib/utils";
-import { Questions, Tag } from "@/types/global";
+import { Questions, Tags } from "@/types/global";
 interface Props {
   question: Questions;
 }
@@ -27,7 +27,7 @@ const QuestionCard = ({
         </div>
       </div>
       <div className="mt-3.5 flex w-full flex-wrap gap-2">
-        {tags.map((tag: Tag) => (
+        {tags.map((tag: Tags) => (
           <TagCard key={tag._id} _id={tag._id} name={tag.name} compact />
         ))}
       </div>
