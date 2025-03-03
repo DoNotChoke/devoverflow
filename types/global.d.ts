@@ -1,24 +1,24 @@
-import { NextResponse } from "next/server";
-
 interface Tags {
   _id: string;
   name: string;
 }
+
 interface Author {
   _id: string;
   name: string;
   image: string;
 }
+
 interface Questions {
   _id: string;
   title: string;
   content: string;
   tags: Tag[];
   author: Author;
-  createdAt: Date;
   upvotes: number;
   answers: number;
   views: number;
+  createdAt: Date;
 }
 
 type ActionResponse<T = null> = {
@@ -26,7 +26,7 @@ type ActionResponse<T = null> = {
   data?: T;
   error?: {
     message: string;
-    details: Record<string, string[]>;
+    details?: Record<string, string[]>;
   };
   status?: number;
 };

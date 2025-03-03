@@ -2,7 +2,6 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 import { auth } from "@/auth";
-import AnswerForm from "@/components/forms/AnswerForm";
 import QuestionForm from "@/components/forms/QuestionForm";
 
 const AskAQuestion = async () => {

@@ -20,12 +20,6 @@ import {
   GetQuestionParams,
   IncrementViewsParams,
 } from "@/types/action";
-import {
-  ActionResponse,
-  ErrorResponse,
-  PaginatedSearchParams,
-  Questions,
-} from "@/types/global";
 
 export async function createQuestion(
   params: CreateQuestionParams,

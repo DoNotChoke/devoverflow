@@ -13,7 +13,6 @@ import ROUTES from "@/constants/routes";
 import { getAnswers } from "@/lib/actions/answer.action";
 import { getQuestion, incrementViews } from "@/lib/actions/question.action";
 import { formatNumber, getTimeStamp } from "@/lib/utils";
-import { RouteParams, Tags } from "@/types/global";
 
 const QuestionDetails = async ({ params }: RouteParams) => {
   const { id } = await params;

@@ -14,12 +14,11 @@ export const api = {
       user,
       provider,
       providerAccountId,
-    }: SignInWithOAuthParams) => {
-      return fetchHandler(`${API_BASE_URL}/auth/${ROUTES.SIGN_IN_WITH_OAUTH}`, {
+    }: SignInWithOAuthParams) =>
+      fetchHandler(`${API_BASE_URL}/auth/${ROUTES.SIGN_IN_WITH_OAUTH}`, {
         method: "POST",
         body: JSON.stringify({ user, provider, providerAccountId }),
-      });
-    },
+      }),
   },
   users: {
     getAll: () => fetchHandler(`${API_BASE_URL}/users`),
@@ -62,5 +61,12 @@ export const api = {
       }),
     delete: (id: string) =>
       fetchHandler(`${API_BASE_URL}/accounts/${id}`, { method: "DELETE" }),
+  },
+  ai: {
+    getAnswer: (question: string, content: string): APIResponse<string> =>
+      fetchHandler(`${API_BASE_URL}/ai/answers`, {
+        method: "POST",
+        body: JSON.stringify({ question, content }),
+      }),
   },
 };

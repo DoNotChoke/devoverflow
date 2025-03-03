@@ -8,13 +8,6 @@ import {
   PaginatedSearchParamsSchema,
 } from "@/lib/validation";
 import { GetTagQuestionParams } from "@/types/action";
-import {
-  ActionResponse,
-  ErrorResponse,
-  PaginatedSearchParams,
-  Questions,
-  Tags,
-} from "@/types/global";
 
 export async function getTags(params: PaginatedSearchParams): Promise<
   ActionResponse<{

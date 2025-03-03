@@ -3,7 +3,6 @@ import React from "react";
 import AnswerCard from "@/components/cards/AnswerCard";
 import DataRenderer from "@/components/DataRenderer";
 import { EMPTY_ANSWERS } from "@/constants/states";
-import { ActionResponse, Answers } from "@/types/global";
 
 interface Props extends ActionResponse<Answers[]> {
   totalAnswers: number;

@@ -10,7 +10,6 @@ import action from "@/lib/handlers/action";
 import { handleError } from "@/lib/handlers/error";
 import { AnswerServerSchema, GetAnswerSchema } from "@/lib/validation";
 import { CreateAnswerParams, GetAnswerParams } from "@/types/action";
-import { ActionResponse, Answers, ErrorResponse } from "@/types/global";
 
 export async function createAnswer(
   params: CreateAnswerParams,

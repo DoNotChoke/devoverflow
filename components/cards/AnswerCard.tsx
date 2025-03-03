@@ -5,7 +5,6 @@ import { Preview } from "@/components/editor/Preview";
 import UserAvatar from "@/components/UserAvatar";
 import ROUTES from "@/constants/routes";
 import { getTimeStamp } from "@/lib/utils";
-import { Answers } from "@/types/global";
 
 const AnswerCard = ({ _id, author, content, createdAt }: Answers) => {
   return (
