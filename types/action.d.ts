@@ -45,3 +45,7 @@ export interface CreateAnswerParams {
   questionId: string;
   content: string;
 }
+
+export interface GetAnswerParams extends PaginatedSearchParams {
+  questionId: string;
+}
