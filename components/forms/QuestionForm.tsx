@@ -9,8 +9,14 @@ import React, { useRef, useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import TagCard from "@/components/cards/TagCard";
-import { Button } from "@/components/ui/button";
+import ROUTES from "@/constants/routes";
+import { toast } from "@/hooks/use-toast";
+import { createQuestion, editQuestion } from "@/lib/actions/question.action";
+import { AskQuestionSchema } from "@/lib/validation";
+import { Questions } from "@/types/global";
+
+import TagCard from "../cards/TagCard";
+import { Button } from "../ui/button";
 import {
   Form,
   FormControl,
@@ -19,15 +25,10 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import ROUTES from "@/constants/routes";
-import { toast } from "@/hooks/use-toast";
-import { createQuestion, editQuestion } from "@/lib/actions/question.action";
-import { AskQuestionSchema } from "@/lib/validation";
-import { Questions } from "@/types/global";
+} from "../ui/form";
+import { Input } from "../ui/input";
+
 const Editor = dynamic(() => import("@/components/editor"), {
-  // Make sure we turn SSR off
   ssr: false,
 });
 
@@ -35,8 +36,12 @@ interface Params {
   question?: Questions;
   isEdit?: boolean;
 }
+
 const QuestionForm = ({ question, isEdit = false }: Params) => {
   const router = useRouter();
+  const editorRef = useRef<MDXEditorMethods>(null);
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof AskQuestionSchema>>({
     resolver: zodResolver(AskQuestionSchema),
     defaultValues: {
@@ -46,15 +51,15 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
     },
   });
 
-  const editorRef = useRef<MDXEditorMethods>(null);
-  const [isPending, startTransition] = useTransition();
   const handleInputKeyDown = (
     e: React.KeyboardEvent<HTMLInputElement>,
     field: { value: string[] },
   ) => {
+    console.log(field, e);
     if (e.key === "Enter") {
       e.preventDefault();
       const tagInput = e.currentTarget.value.trim();
+
       if (tagInput && tagInput.length < 15 && !field.value.includes(tagInput)) {
         form.setValue("tags", [...field.value, tagInput]);
         e.currentTarget.value = "";
@@ -72,16 +77,20 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
       }
     }
   };
+
   const handleTagRemove = (tag: string, field: { value: string[] }) => {
     const newTags = field.value.filter((t) => t !== tag);
+
     form.setValue("tags", newTags);
+
     if (newTags.length === 0) {
       form.setError("tags", {
         type: "manual",
-        message: "Tag are required",
+        message: "Tags are required",
       });
     }
   };
+
   const handleCreateQuestion = async (
     data: z.infer<typeof AskQuestionSchema>,
   ) => {
@@ -91,12 +100,15 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
           questionId: question?._id,
           ...data,
         });
+
         if (result.success) {
           toast({
             title: "Success",
             description: "Question updated successfully",
           });
-          if (result.data) router.push(ROUTES.QUESTION(result.data._id));
+
+          if (result.data)
+            router.push(ROUTES.QUESTION(result.data._id as string));
         } else {
           toast({
             title: `Error ${result.status}`,
@@ -104,14 +116,18 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
             variant: "destructive",
           });
         }
+
         return;
       }
+
       const result = await createQuestion(data);
+
       if (result.success) {
         toast({
           title: "Success",
           description: "Question created successfully",
         });
+
         if (result.data) router.push(ROUTES.QUESTION(result.data._id));
       } else {
         toast({
@@ -122,6 +138,7 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
       }
     });
   };
+
   return (
     <Form {...form}>
       <form
@@ -138,44 +155,42 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
               </FormLabel>
               <FormControl>
                 <Input
-                  className="paragraph-regular background-light900_dark300
-                    light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
+                  className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
                   {...field}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Be specific and imagine you&#39;re asking a question to another
+                Be specific and imagine you&apos;re asking a question to another
                 person.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="content"
           render={({ field }) => (
             <FormItem className="flex w-full flex-col">
               <FormLabel className="paragraph-semibold text-dark400_light800">
-                Details explanation of your problem{" "}
+                Detailed explanation of your problem{" "}
                 <span className="text-primary-500">*</span>
               </FormLabel>
               <FormControl>
                 <Editor
-                  editorRef={editorRef}
                   value={field.value}
+                  editorRef={editorRef}
                   fieldChange={field.onChange}
                 />
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Introduce the problem in details
+                Introduce the problem and expand on what you&apos;ve put in the
+                title.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="tags"
@@ -187,14 +202,13 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
               <FormControl>
                 <div>
                   <Input
-                    className="paragraph-regular background-light900_dark300
-                    light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
-                    placeholder="Add tags"
+                    className="paragraph-regular background-light700_dark300 light-border-2 text-dark300_light700 no-focus min-h-[56px] border"
+                    placeholder="Add tags..."
                     onKeyDown={(e) => handleInputKeyDown(e, field)}
                   />
                   {field.value.length > 0 && (
                     <div className="flex-start mt-2.5 flex-wrap gap-2.5">
-                      {field.value.map((tag: string) => (
+                      {field?.value?.map((tag: string) => (
                         <TagCard
                           key={tag}
                           _id={tag}
@@ -210,12 +224,14 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
                 </div>
               </FormControl>
               <FormDescription className="body-regular mt-2.5 text-light-500">
-                Add up to 3 tags to describe what your question is about
+                Add up to 3 tags to describe what your question is about. You
+                need to press enter to add a tag.
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
+
         <div className="mt-16 flex justify-end">
           <Button
             type="submit"
@@ -236,4 +252,5 @@ const QuestionForm = ({ question, isEdit = false }: Params) => {
     </Form>
   );
 };
+
 export default QuestionForm;

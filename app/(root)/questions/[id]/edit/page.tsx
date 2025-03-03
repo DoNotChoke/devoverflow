@@ -15,9 +15,13 @@ const EditQuestion = async ({ params }: RouteParams) => {
     return redirect("/sign-in");
   }
   const { data: question, success } = await getQuestion({ questionId: id });
+  console.log(question);
   if (!success) return notFound();
-  if (question?.author.toString() !== session?.user?.id)
+  if (question?.author._id.toString() !== session?.user?.id) {
+    console.log("QuestionId:", question?.author.toString());
+    console.log("SessionId:", session?.user?.id);
     redirect(ROUTES.QUESTION(id));
+  }
   return (
     <main>
       <QuestionForm question={question} isEdit />

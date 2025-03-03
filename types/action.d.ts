@@ -36,3 +36,12 @@ export interface GetTagQuestionParams
   extends Omit<PaginatedSearchParams, "fiter"> {
   tagId: string;
 }
+
+export interface IncrementViewsParams {
+  questionId: string;
+}
+
+export interface CreateAnswerParams {
+  questionId: string;
+  content: string;
+}
